@@ -38,6 +38,7 @@ sudo kubectl get pods -A
 
 # Troubleshooting 
 1) Verify services and ports
+
 *** Is the API server up?
 
 sudo ss -lntp | grep 6443
@@ -63,6 +64,7 @@ kubectl -n kube-system logs -l component=kube-apiserver --previous --tail=200
 kubectl -n kube-system get pods -l component=etcd -o wide
 kubectl -n kube-system logs -l component=etcd --tail=200
 kubectl -n kube-system describe pod -l component=etcd
+
 *** Disk space & inode pressure on the master node
 
 df -h
