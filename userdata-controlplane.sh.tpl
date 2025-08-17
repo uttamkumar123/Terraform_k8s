@@ -47,10 +47,9 @@ dnf install -y --allowerasing kubelet kubeadm kubectl
 systemctl enable --now kubelet
 
 # ---------- kubeadm init ----------
-PRIVATE_IP=$(hostname -I | awk '{print $1}')
-kubeadm_token="${kubeadm_token:-abcdef.0123456789abcdef}"
-TOKEN="${kubeadm_token:-abcdef.0123456789abcdef}"
-pod_cidr="${pod_cidr:-10.244.0.0/16}" 
+PRIVATE_IP="$$(hostname -I | awk '{print $1}')"
+kubeadm_token="$${kubeadm_token:-abcdef.0123456789abcdef}"
+TOKEN="$${kubeadm_token:-abcdef.0123456789abcdef}"
 
 kubeadm init \
   --token "${kubeadm_token}" \

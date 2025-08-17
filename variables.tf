@@ -10,13 +10,14 @@ variable "cp_instance_type" {
 
 variable "dp_instance_type" {
   type    = string
-  default = "t2.micro"
+  default = "t3.medium"
 }
 
 variable "ami_id" {
   description = "AMI ID for the EC2 instance"
   type        = string
-  default     = "ami-0f2b7517c0b0ffbe6"
+  # Use Any Preferred AMI ID
+  default     = "ami-***"
 }
 
 variable "key_name" {

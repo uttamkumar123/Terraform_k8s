@@ -48,14 +48,14 @@ dnf install -y --allowerasing kubelet kubeadm kubectl
 systemctl enable --now kubelet
 
 # Ensure kubelet binds to the correct node IP
-PRIVATE_IP=$(hostname -I | awk '{print $1}')
-echo "KUBELET_EXTRA_ARGS=--node-ip=${PRIVATE_IP}" | tee /etc/sysconfig/kubelet
+PRIVATE_IP="$$(hostname -I | awk '{print $1}')"
+echo "KUBELET_EXTRA_ARGS=--node-ip=$${PRIVATE_IP}" | tee /etc/sysconfig/kubelet
 systemctl daemon-reload
 systemctl restart kubelet
 
 # ---------- Discover control plane & join ----------
-REGION="${region:-us-east-1}"
-TOKEN="${kubeadm_token:-abcdef.0123456789abcdef}"
+REGION="$${region:-us-east-1}"
+TOKEN="$${kubeadm_token:-abcdef.0123456789abcdef}"
 
 # Discover control-plane private IP via tag
 attempts=0
@@ -83,9 +83,9 @@ done
 # Join the cluster
 # NOTE: For production, use --discovery-token-ca-cert-hash sha256:<hash> instead of unsafe skip.
 kubeadm join ${CP_IP}:6443 \
-  --token "${TOKEN}" \
+  --token "$${TOKEN}" \
   --discovery-token-unsafe-skip-ca-verification
 
 # (Optional) Basic node sanity log
-echo "Joined Kubernetes cluster at ${CP_IP}:6443 from ${PRIVATE_IP}"
+echo "Joined Kubernetes cluster at ${CP_IP}:6443 from $${PRIVATE_IP}"
 
