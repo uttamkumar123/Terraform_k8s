@@ -4,7 +4,6 @@ set -euxo pipefail
 # ---------- System prep ----------
 swapoff -a || true
 sed -i.bak '/ swap / s/^/#/' /etc/fstab
-
 modprobe overlay || true
 modprobe br_netfilter || true
 cat >/etc/modules-load.d/k8s.conf <<'EOF'
@@ -68,6 +67,11 @@ if id ec2-user &>/dev/null; then
   cp /etc/kubernetes/admin.conf /home/ec2-user/.kube/config
   chown -R ec2-user:ec2-user /home/ec2-user/.kube
 fi
+
+# Pin Kubenet IP address
+echo "KUBELET_EXTRA_ARGS=--node-ip=${PRIVATE_IP}" | sudo tee /etc/sysconfig/kubelet
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
 
 # CNI (Flannel is lighter)
 kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
