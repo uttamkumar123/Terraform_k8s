@@ -67,7 +67,8 @@ kubectl -n kube-system describe pod -l component=etcd
 
 *** Disk space & inode pressure on the master node
 
-df -h
-df -i
+8) df -h
+
+9) df -i
 
 
