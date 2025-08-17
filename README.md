@@ -14,7 +14,7 @@ Terraform code to create a vanilla K8s cluster on AWS.
 !!! This is a demo code. It trades some security best pratices for simplicity (e.g. fixed kubeadm token, wide open SG !!!
 
 # How To Run :
-- The code assumes the readers has begineer to intermediate terraform knowledge 
+*** The code assumes the readers has begineer to intermediate terraform knowledge 
 1) terraform init
 
 2) terraform plan 
@@ -23,19 +23,23 @@ Terraform code to create a vanilla K8s cluster on AWS.
 
 After a few minutes, SSH to the control-plane instance (find it in the EC2 console or via the ASG) and verify:
 
-- Get Publich IP for control plane AWs EC2 instance
+***Get Publich IP for control plane AWs EC2 instance
+
 aws ec2 describe-instances --filters "Name=tag:k8s-role,Values=control-plane" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].PublicIpAddress" --region us-east-1 --output text
 
-- SSH using keypair
+*** SSH using keypair
+
 ssh -i ~/.ssh/YOUR_KEY.pem ubuntu@CONTROL_PLANE_PUBLIC_IP
 
-- Kubectl command to query cluster
+*** Kubectl command to query cluster
+
 sudo kubectl get nodes -o wide
 sudo kubectl get pods -A
 
 # Troubleshooting 
 1) Verify services and ports
-- Is the API server up?
+*** Is the API server up?
+
 sudo ss -lntp | grep 6443
 
 2) Kubelet and containerd status
@@ -59,7 +63,8 @@ kubectl -n kube-system logs -l component=kube-apiserver --previous --tail=200
 kubectl -n kube-system get pods -l component=etcd -o wide
 kubectl -n kube-system logs -l component=etcd --tail=200
 kubectl -n kube-system describe pod -l component=etcd
-- Disk space & inode pressure on the master node
+*** Disk space & inode pressure on the master node
+
 df -h
 df -i
 
